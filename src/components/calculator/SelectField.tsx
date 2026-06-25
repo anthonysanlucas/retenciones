@@ -6,7 +6,8 @@ interface Option {
 interface SelectFieldProps {
   label: string;
   options: Option[];
-  defaultValue?: string;
+  value: string;
+  onChange: (value: string) => void;
 }
 
 const ChevronDown = () => (
@@ -15,13 +16,14 @@ const ChevronDown = () => (
   </svg>
 );
 
-export function SelectField({ label, options, defaultValue }: SelectFieldProps) {
+export function SelectField({ label, options, value, onChange }: SelectFieldProps) {
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-sm text-gray-600">{label}</label>
       <div className="relative">
         <select
-          defaultValue={defaultValue ?? options[0]?.value}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           className="w-full appearance-none px-4 py-3 pr-10 bg-white border border-gray-200 rounded-xl text-base text-gray-900 outline-none cursor-pointer focus:border-primary-300 focus:ring-2 focus:ring-primary-100 transition-all"
         >
           {options.map((opt) => (

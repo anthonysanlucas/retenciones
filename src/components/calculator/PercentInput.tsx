@@ -2,9 +2,11 @@ interface PercentInputProps {
   label: string;
   placeholder?: string;
   max?: number;
+  value: string;
+  onChange: (value: string) => void;
 }
 
-export function PercentInput({ label, placeholder = "0", max = 99 }: PercentInputProps) {
+export function PercentInput({ label, placeholder = "0", max = 99, value, onChange }: PercentInputProps) {
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-sm text-gray-600">{label}</label>
@@ -12,8 +14,11 @@ export function PercentInput({ label, placeholder = "0", max = 99 }: PercentInpu
         <input
           type="number"
           placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           min={0}
           max={max}
+          step={1}
           className="flex-1 outline-none text-base text-gray-900 placeholder-gray-300 bg-transparent min-w-0"
         />
         <span className="text-gray-400 text-base select-none">%</span>
