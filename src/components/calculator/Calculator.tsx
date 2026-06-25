@@ -1,8 +1,8 @@
 import { MoneyInput } from "./MoneyInput";
 import { MoneyDisplay } from "./MoneyDisplay";
+import { PercentInput } from "./PercentInput";
 import { SelectField } from "./SelectField";
 import { TotalRow } from "./TotalRow";
-import { SummaryDisplay } from "./SummaryDisplay";
 
 export function Calculator() {
   return (
@@ -38,8 +38,11 @@ export function Calculator() {
             <MoneyDisplay label="Valor IVA" />
           </div>
 
-          <div className="border-t border-gray-100 pt-4">
-            <TotalRow label="Total factura" />
+          <PercentInput label="Descuento" max={99} />
+
+          <div className="border-t border-gray-100 pt-4 flex flex-col gap-2.5">
+            <TotalRow label="Total factura" muted />
+            <TotalRow label="Total con descuento" />
           </div>
         </div>
 
@@ -75,12 +78,11 @@ export function Calculator() {
             />
             <MoneyDisplay label="Valor ret. IR" />
           </div>
-        </div>
 
-        {/* Summary */}
-        <div className="grid grid-cols-2 gap-4">
-          <SummaryDisplay label="Total retención" />
-          <SummaryDisplay label="Valor a pagar" />
+          <div className="border-t border-gray-100 pt-4 flex flex-col gap-2.5">
+            <TotalRow label="Total retención" muted />
+            <TotalRow label="Valor a pagar" />
+          </div>
         </div>
       </main>
     </div>
