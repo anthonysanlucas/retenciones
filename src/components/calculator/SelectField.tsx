@@ -22,7 +22,7 @@ export function SelectField({ label, options, defaultValue }: SelectFieldProps) 
       <div className="relative">
         <select
           defaultValue={defaultValue ?? options[0]?.value}
-          className="w-full appearance-none px-4 py-3 pr-10 bg-white border border-gray-200 rounded-xl text-base text-gray-900 outline-none cursor-pointer"
+          className="w-full appearance-none px-4 py-3 pr-10 bg-white border border-gray-200 rounded-xl text-base text-gray-900 outline-none cursor-pointer focus:border-primary-300 focus:ring-2 focus:ring-primary-100 transition-all"
         >
           {options.map((opt) => (
             <option key={opt.value} value={opt.value}>

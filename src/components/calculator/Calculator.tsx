@@ -7,7 +7,6 @@ import { TotalRow } from "./TotalRow";
 export function Calculator() {
   return (
     <div className="min-h-screen bg-stone-50 py-12 px-4 sm:px-6">
-      {/* Page header */}
       <header className="max-w-xl mx-auto mb-8 text-center">
         <h1 className="text-3xl font-semibold text-gray-900 tracking-tight">
           Calculadora de retenciones
@@ -19,13 +18,11 @@ export function Calculator() {
 
       <main className="max-w-xl mx-auto flex flex-col gap-4">
         {/* Card 1: Factura */}
-        <div className="bg-white rounded-2xl border border-gray-200 px-6 py-5 flex flex-col gap-4">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-md px-6 pt-5 pb-5 flex flex-col gap-4">
+          <span className="text-xs font-semibold text-primary-500 uppercase tracking-widest">
             Factura
           </span>
-
           <MoneyInput label="Subtotal" />
-
           <div className="grid grid-cols-2 gap-3">
             <SelectField
               label="IVA"
@@ -37,21 +34,19 @@ export function Calculator() {
             />
             <MoneyDisplay label="Valor IVA" />
           </div>
-
           <PercentInput label="Descuento" max={99} />
-
-          <div className="border-t border-gray-100 pt-4 flex flex-col gap-2.5">
+          <div className="bg-primary-50 rounded-xl px-5 pt-4 pb-4 flex flex-col gap-3">
             <TotalRow label="Total factura" muted />
+            <hr className="border-primary-200" />
             <TotalRow label="Total con descuento" />
           </div>
         </div>
 
         {/* Card 2: Retenciones */}
-        <div className="bg-white rounded-2xl border border-gray-200 px-6 py-5 flex flex-col gap-4">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-md px-6 pt-5 pb-5 flex flex-col gap-4">
+          <span className="text-xs font-semibold text-primary-500 uppercase tracking-widest">
             Retenciones
           </span>
-
           <div className="grid grid-cols-2 gap-3">
             <SelectField
               label="Ret. IVA"
@@ -64,7 +59,6 @@ export function Calculator() {
             />
             <MoneyDisplay label="Valor ret. IVA" />
           </div>
-
           <div className="grid grid-cols-2 gap-3">
             <SelectField
               label="Ret. IR"
@@ -78,9 +72,9 @@ export function Calculator() {
             />
             <MoneyDisplay label="Valor ret. IR" />
           </div>
-
-          <div className="border-t border-gray-100 pt-4 flex flex-col gap-2.5">
+          <div className="bg-primary-50 rounded-xl px-5 pt-4 pb-4 flex flex-col gap-3">
             <TotalRow label="Total retención" muted />
+            <hr className="border-primary-200" />
             <TotalRow label="Valor a pagar" />
           </div>
         </div>
