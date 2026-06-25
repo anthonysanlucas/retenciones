@@ -13,12 +13,11 @@ export function Calculator() {
           Calculadora de retenciones
         </h1>
         <p className="mt-2 text-sm text-gray-400">
-          Ecuador &middot; Persona natural obligada a llevar contabilidad
+          Persona natural o jurídica obligadas a llevar contabilidad
         </p>
       </header>
 
       <main className="max-w-xl mx-auto flex flex-col gap-4">
-
         {/* Card 1: Factura */}
         <div className="bg-white rounded-2xl border border-gray-200 px-6 py-5 flex flex-col gap-4">
           <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
@@ -83,7 +82,6 @@ export function Calculator() {
           <SummaryDisplay label="Total retención" />
           <SummaryDisplay label="Valor a pagar" />
         </div>
-
       </main>
     </div>
   );
