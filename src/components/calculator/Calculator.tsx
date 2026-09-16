@@ -23,7 +23,7 @@ export function Calculator() {
   const [ivaPercent, setIvaPercent] = useState("15");
   const [discountPercent, setDiscountPercent] = useState("");
   const [retIVAPercent, setRetIVAPercent] = useState("30");
-  const [retIRPercent, setRetIRPercent] = useState("2.75");
+  const [retIRPercent, setRetIRPercent] = useState("2");
 
   const parsedSubtotal = Math.max(0, parseFloat(subtotal) || 0);
   const parsedDiscount = Math.min(100, Math.max(0, parseInt(discountPercent) || 0));
