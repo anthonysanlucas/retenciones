@@ -36,25 +36,28 @@ export function Calculator() {
     retIRPercent: parseFloat(retIRPercent),
   });
 
+  const hasSubtotal = subtotal.trim() !== "" && parsedSubtotal > 0;
   const hasDiscount = parsedDiscount > 0;
 
   return (
     <div className="min-h-screen bg-stone-50 py-12 px-4 sm:px-6">
-      <header className="max-w-xl mx-auto mb-8 text-center">
-        <h1 className="text-3xl font-semibold text-gray-900 tracking-tight">
+      <header className="max-w-xl mx-auto mb-8 text-center">        
+        <h1 className="text-3xl font-bold text-gray-900 tracking-tight sm:text-4xl">
           Calculadora de retenciones
         </h1>
-        <p className="mt-2 text-sm text-gray-400">
-          Persona natural o jurídica obligadas a llevar contabilidad
+        <p className="mt-2 text-sm text-gray-500">
+          Personas naturales y jurídicas obligadas a llevar contabilidad
         </p>
       </header>
 
-      <main className="max-w-xl mx-auto flex flex-col gap-4">
+      <main className="max-w-xl mx-auto flex flex-col gap-5">
         {/* Card 1: Factura */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-md px-6 pt-5 pb-5 flex flex-col gap-4">
-          <span className="text-xs font-semibold text-primary-500 uppercase tracking-widest">
-            Factura
-          </span>
+        <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs px-6 pt-5 pb-5 flex flex-col gap-4">
+          <div className="flex items-center gap-2">            
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+              Datos de la factura
+            </span>
+          </div>
 
           <MoneyInput
             label="Subtotal"
@@ -64,7 +67,7 @@ export function Calculator() {
 
           <div className="grid grid-cols-2 gap-3">
             <SelectField
-              label="IVA"
+              label="Tarifa IVA"
               options={[
                 { label: "15%", value: "15" },
                 { label: "12%", value: "12" },
@@ -72,7 +75,10 @@ export function Calculator() {
               value={ivaPercent}
               onChange={setIvaPercent}
             />
-            <MoneyDisplay label="Valor IVA" value={fmt(results.valorIVA)} />
+            <MoneyDisplay
+              label="Valor IVA"
+              value={hasSubtotal ? fmt(results.valorIVA) : "-"}
+            />
           </div>
 
           <PercentInput
@@ -83,44 +89,51 @@ export function Calculator() {
           />
 
           {/* Desglose de factura */}
-          <div className="bg-primary-50 rounded-xl px-5 pt-4 pb-4 flex flex-col gap-3">
-            <TotalRow label="Subtotal" value={fmt(parsedSubtotal)} muted />
+          <div className="bg-stone-50 rounded-xl p-4 border border-stone-200/70 flex flex-col gap-2">
+            <TotalRow
+              label="Subtotal"
+              value={hasSubtotal ? fmt(parsedSubtotal) : "-"}
+              muted
+            />
 
             {hasDiscount && (
               <>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-primary-400">
-                    Descuento ({parsedDiscount}%)
-                  </span>
-                  <span className="text-sm tabular-nums text-primary-400">
-                    -${fmt(results.valorDescuento)}
-                  </span>
-                </div>
+                <TotalRow
+                  label={`Descuento (${parsedDiscount}%)`}
+                  value={hasSubtotal ? fmt(results.valorDescuento) : "-"}
+                  prefix="-$"
+                  muted
+                />
                 <TotalRow
                   label="Subtotal oficial"
-                  value={fmt(results.subtotalOficial)}
+                  value={hasSubtotal ? fmt(results.subtotalOficial) : "-"}
                   muted
                 />
               </>
             )}
 
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-primary-400">IVA ({ivaPercent}%)</span>
-              <span className="text-sm tabular-nums text-primary-400">
-                ${fmt(results.valorIVA)}
-              </span>
-            </div>
+            <TotalRow
+              label={`IVA (${ivaPercent}%)`}
+              value={hasSubtotal ? fmt(results.valorIVA) : "-"}
+              prefix="+$"
+              muted
+            />
 
-            <hr className="border-primary-200" />
-            <TotalRow label="Total factura" value={fmt(results.totalFactura)} />
+            <hr className="border-stone-200 my-1" />
+            <TotalRow
+              label="Total factura"
+              value={hasSubtotal ? fmt(results.totalFactura) : "-"}
+            />
           </div>
         </div>
 
         {/* Card 2: Retenciones */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-md px-6 pt-5 pb-5 flex flex-col gap-4">
-          <span className="text-xs font-semibold text-primary-500 uppercase tracking-widest">
-            Retenciones
-          </span>
+        <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs px-6 pt-5 pb-5 flex flex-col gap-4">
+          <div className="flex items-center gap-2">            
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+              Retenciones aplicables
+            </span>
+          </div>
 
           <div className="grid grid-cols-2 gap-3">
             <SelectField
@@ -135,7 +148,7 @@ export function Calculator() {
             />
             <MoneyDisplay
               label="Valor ret. IVA"
-              value={fmt(results.valorRetencionIVA)}
+              value={hasSubtotal ? fmt(results.valorRetencionIVA) : "-"}
             />
           </div>
 
@@ -143,8 +156,8 @@ export function Calculator() {
             <SelectField
               label="Ret. IR"
               options={[
-                { label: "2.75%", value: "2.75" },
                 { label: "2%", value: "2" },
+                { label: "2.75%", value: "2.75" },
                 { label: "1.75%", value: "1.75" },
                 { label: "1%", value: "1" },
               ]}
@@ -153,18 +166,48 @@ export function Calculator() {
             />
             <MoneyDisplay
               label="Valor ret. IR"
-              value={fmt(results.valorRetencionIR)}
+              value={hasSubtotal ? fmt(results.valorRetencionIR) : "-"}
             />
           </div>
 
-          <div className="bg-primary-50 rounded-xl px-5 pt-4 pb-4 flex flex-col gap-3">
+          {/* Desglose de retenciones */}
+          <div className="bg-stone-50 rounded-xl p-4 border border-stone-200/70 flex flex-col gap-2">
             <TotalRow
-              label="Total retención"
-              value={fmt(results.totalRetencion)}
+              label={`Retención IVA (${retIVAPercent}%)`}
+              value={hasSubtotal ? fmt(results.valorRetencionIVA) : "-"}
+              prefix="-$"
               muted
             />
-            <hr className="border-primary-200" />
-            <TotalRow label="Valor a pagar" value={fmtPago(results.valorPago)} />
+            <TotalRow
+              label={`Retención IR (${retIRPercent}%)`}
+              value={hasSubtotal ? fmt(results.valorRetencionIR) : "-"}
+              prefix="-$"
+              muted
+            />
+            <hr className="border-stone-200 my-1" />
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-gray-700">Total retención</span>
+              <span className={`text-base font-bold tabular-nums ${hasSubtotal ? "text-gray-900" : "text-gray-400"}`}>
+                {hasSubtotal ? `-$${fmt(results.totalRetencion)}` : "-"}
+              </span>
+            </div>
+          </div>
+
+          {/* Resultado definitivo: Valor a pagar */}
+          <div className="bg-gradient-to-br from-primary-800 to-primary-900 text-white rounded-xl p-5 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary-200">
+                Valor a pagar
+              </span>
+              <p className="text-xs text-primary-300 mt-0.5">
+                Total factura menos retenciones aplicadas
+              </p>
+            </div>
+            <div className="text-left sm:text-right">
+              <span className={`text-3xl font-extrabold tracking-tight tabular-nums ${hasSubtotal ? "text-white" : "text-primary-300"}`}>
+                {hasSubtotal ? `$${fmtPago(results.valorPago)}` : "-"}
+              </span>
+            </div>
           </div>
         </div>
       </main>
